@@ -5,8 +5,8 @@
 
 </head>
 <body>
-<%--<jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>--%>
-<%--<jsp:useBean id="formatter" scope="request" type="java.time.format.DateTimeFormatter"/>--%>
+<jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
+<jsp:useBean id="formatter" scope="request" type="java.time.format.DateTimeFormatter"/>
 
 <h3><a href="index.html">Home</a></h3>
 <hr>

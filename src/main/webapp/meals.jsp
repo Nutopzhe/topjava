@@ -10,9 +10,6 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<h3>
-    <a href="meals?action=create">Add meal</a>
-</h3>
 
 <ul>
     <table border="1" cellpadding="6" cellspacing="2">
@@ -30,7 +27,7 @@
         <c:forEach var="mt" items="${meals}">
             <tr style="color: ${mt.excess ? 'red' : 'green'}">
                 <td>
-                    ${mt.dateTime.format(formatter)}
+                        ${mt.dateTime.format(formatter)}
                 </td>
                 <td>${mt.description}</td>
                 <td>${mt.calories}</td>
@@ -43,6 +40,11 @@
             </tr>
         </c:forEach>
     </table>
+</ul>
+<ul>
+    <h3>
+        <a href="meals?action=create">Add meal</a>
+    </h3>
 </ul>
 
 <div>

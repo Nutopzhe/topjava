@@ -11,10 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MealRepositoryMemory implements MealRepository {
     private Map<Long, Meal> mealMap = new ConcurrentHashMap<>();
-    private AtomicLong counter = new AtomicLong();
+    private AtomicLong counter = new AtomicLong(0);
 
     {
-        MealsUtil.meals.forEach(this::save);
+//        MealsUtil.meals.forEach(this::save);
+        for (Meal meal : MealsUtil.meals) {
+            meal.setId(counter.incrementAndGet());
+            mealMap.put(meal.getId(), meal);
+        }
     }
 
     @Override
@@ -28,12 +32,15 @@ public class MealRepositoryMemory implements MealRepository {
     }
 
     @Override
-    public Meal save(Meal meal) {
-        if (!mealMap.containsKey(meal.getId())) {
-            meal.setId(counter.incrementAndGet());
-        }
+    public void addMeal(Meal meal) {
+        meal.setId(counter.incrementAndGet());
         mealMap.put(meal.getId(), meal);
-        return meal;
+    }
+
+    @Override
+    public void updateMeal(Meal meal) {
+        mealMap.remove(meal.getId());
+        mealMap.put(meal.getId(), meal);
     }
 
     @Override
