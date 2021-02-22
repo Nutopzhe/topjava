@@ -5,13 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.javawebinar.topjava.UserTestData;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Arrays;
+import java.util.Collection;
 
-import static ru.javawebinar.topjava.UserTestData.NOT_FOUND;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 public class InMemoryAdminRestControllerTest {
     private static final Logger log = LoggerFactory.getLogger(InMemoryAdminRestControllerTest.class);
@@ -22,7 +24,7 @@ public class InMemoryAdminRestControllerTest {
 
     @BeforeClass
     public static void beforeClass() {
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-test.xml");
         log.info("\n{}\n", Arrays.toString(appCtx.getBeanDefinitionNames()));
         controller = appCtx.getBean(AdminRestController.class);
         repository = appCtx.getBean(InMemoryUserRepository.class);
@@ -40,13 +42,22 @@ public class InMemoryAdminRestControllerTest {
     }
 
     @Test
-    public void delete() {
-        controller.delete(USER_ID);
-        Assert.assertNull(repository.get(USER_ID));
+    public void delete() throws Exception {
+//        controller.delete(USER_ID);
+//        Assert.assertNull(repository.get(USER_ID));
+        controller.delete(UserTestData.USER_ID);
+        Collection<User> users = controller.getAll();
+        Assert.assertEquals(users.size(), 1);
+        Assert.assertEquals(users.iterator().next(), admin);
     }
 
-    @Test
-    public void deleteNotFound() {
-        Assert.assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND));
+    //    @Test
+//    public void deleteNotFound() {
+//        Assert.assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND));
+//    }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteNotFound() throws Exception {
+        controller.delete(10);
     }
 }
